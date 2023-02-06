@@ -1,8 +1,8 @@
 import Leaflet from 'leaflet';
-import mapMarkerImg from '../assets/usa-icon4.png';
+import images from './images';
 
 const mapIcon = Leaflet.icon({
-  iconUrl: mapMarkerImg,
+  iconUrl: images.DeliveryTruck,
   iconSize: [58, 68],
   iconAnchor: [29, 68],
   popupAnchor: [170, 2]

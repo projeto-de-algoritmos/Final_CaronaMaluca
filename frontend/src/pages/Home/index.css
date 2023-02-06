@@ -132,6 +132,10 @@ button:hover {
     font-weight: 600;
 }
 
+.products-list span {
+    font-weight: bold;
+}
+
 /* ********** MAIN STYLES ********** */
 
 .home-main {

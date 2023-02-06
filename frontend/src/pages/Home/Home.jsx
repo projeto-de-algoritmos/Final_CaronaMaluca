@@ -20,6 +20,11 @@ const Home = () => {
   const [dijkstra, setDijkstra] = useState();
   const [results, setResults] = useState([]);
   const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
+  const [products, setProducts] = useState([]);
+  const [productName, setProductName] = useState("");
+  const [productValue, setProductValue] = useState(0);
+  const [productWeight, setProductWight] = useState(0);
+  const [maxWeight, setMaxWeight] = useState(0);
 
   useEffect(() => {
     handleAllCities();
@@ -32,16 +37,52 @@ const Home = () => {
 
   const handleMaxWeight = (e) => {
     console.log(e);
+    setMaxWeight(e);
+  };
+
+  const handleProductName = (e) => {
+    console.log(e);
+    setProductName(e);
+  };
+
+  const handleProductWeight = (e) => {
+    console.log(e);
+    setProductWight(e);
+  };
+
+  const handleProductValue = (e) => {
+    console.log(e);
+    setProductValue(e);
+  };
+
+  const handleProduct = () => {
+    const aux = {
+      name: productName,
+      value: productValue,
+      weight: productWeight,
+    };
+
+    setProducts([...products, aux]);
   };
 
   const handleSearchRoute = async () => {
     !(selectedCities.start || selectedCities.end) &&
       alert("Selecione o ponto de partida e o ponto de destino");
-    const dijkstraTemp = (
-      await GetDijkstraResult(selectedCities.start, selectedCities.end)
-    ).data;
-    handleDistance(dijkstraTemp);
-    setDijkstra(dijkstraTemp);
+
+    const payload = {
+      start: selectedCities.start,
+      end: selectedCities.end,
+      products: products,
+      maxWeight: maxWeight,
+    };
+
+    console.log("PAYLOAD", payload);
+
+    // const dijkstraTemp = (
+    //   await GetDijkstraResult(selectedCities.start, selectedCities.end)
+    // ).data;
+    // handleDistance(dijkstraTemp);
+    // setDijkstra(dijkstraTemp);
   };
 
   const handleDistance = async (dijkstraTemp) => {
@@ -85,10 +126,7 @@ const Home = () => {
           </h1>
         </div>
         <div className="sidebar-header">
-          <div
-            className="details-filter-row text-center"
-            style={{ display: "block" }}
-          >
+          <div className="text-center" style={{ display: "block" }}>
             <label htmlFor="peso-maximo">Peso máximo</label>
             <input
               type="number"
@@ -155,7 +193,7 @@ const Home = () => {
                   id="peso-maximo"
                   className="form-control p-2 mb-2"
                   placeholder="Ex: Iphone"
-                  onChange={(e) => handleMaxWeight(e.target.value)}
+                  onChange={(e) => handleProductName(e.target.value)}
                 />
               </div>
               <div className="col-6">
@@ -167,7 +205,7 @@ const Home = () => {
                   id="peso-maximo"
                   className="form-control p-2 mb-2"
                   placeholder="Ex: 50"
-                  onChange={(e) => handleMaxWeight(e.target.value)}
+                  onChange={(e) => handleProductWeight(e.target.value)}
                 />
               </div>
               <div className="col-12">
@@ -179,46 +217,24 @@ const Home = () => {
                   id="peso-maximo"
                   placeholder="Ex: 15"
                   className="form-control p-2 mb-2"
-                  onChange={(e) => handleMaxWeight(e.target.value)}
+                  onChange={(e) => handleProductValue(e.target.value)}
                 />
               </div>
-              <button onClick={() => handleSearchRoute()}>
-                Registrar Produto
-              </button>
+              <button onClick={() => handleProduct()}>Registrar Produto</button>
               <button onClick={() => handleSearchRoute()} className="mt-2">
                 Buscar rota
               </button>
             </div>
+            <div className="products-list mt-2">
+              {products &&
+                products.map((p, index) => (
+                  <p className="p-0 m-0">
+                    <span>Nome: </span> {p.name} - <span>Peso: </span>
+                    {p.weight} - <span>Valor: </span> {p.value}
+                  </p>
+                ))}
+            </div>
           </div>
-        </div>
-        <div className="sidebar-results">
-          {temporaryArray.length > 1 && (
-            <div className="text-center header">
-              <p>Rota</p>
-            </div>
-          )}
-          {temporaryArray.length > 1 &&
-            temporaryArray.map((c, e) => (
-              <div key={e} className="routes">
-                <p id="start">
-                  De: <span>{c.start}</span>{" "}
-                </p>
-                <p id="end">
-                  Para: <span>{c.end}</span>{" "}
-                </p>
-                <p id="distance">
-                  Distance: <span>{c.distance}km</span>
-                </p>
-              </div>
-            ))}
-          {temporaryArray.length > 1 && (
-            <div className="text-center footer">
-              <p>
-                Distancia Final:{" "}
-                <span>{dijkstra && dijkstra.totalDistance}km</span>
-              </p>
-            </div>
-          )}
         </div>
       </div>
       <div className="home-main">
