@@ -12,7 +12,7 @@
 }
 
 .home-sidebar {
-    width: 35%;
+    width: 38%;
     height: 100%;
     background-color: var(--terciary-color);
     padding: 20px 30px;
@@ -38,12 +38,14 @@
 }
 
 button {
-    padding: 8px 30px;
+    padding: 15px 0px;
     background-color: var(--primary-color);
     color: var(--terciary-color);
     font-weight: 600;
+    width: 100%;
     border: none !important;
     border-radius: 5px !important;
+    text-align: center ;
 }
 
 button:hover {
@@ -54,7 +56,8 @@ button:hover {
 }
 
 .sidebar-results {
-    height: 60%;
+    margin-top: 3%;
+    height: 400px;
     overflow-y: auto;
 }
 
@@ -110,7 +113,6 @@ button:hover {
     color: var(--secundary-color);
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-
 }
 
 .sidebar-results .footer span {
@@ -119,17 +121,6 @@ button:hover {
     font-weight: 600;
     font-size: 1.2rem;
     color: var(--primary-color);
-}
-
-.sidebar-footer {
-    height: 10%;
-}
-
-.sidebar-footer p {
-    color: var(--primary-color);
-    margin: 0px;
-    font-size: 1.2rem;
-    font-weight: 600;
 }
 
 .products-list span {

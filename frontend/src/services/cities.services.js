@@ -4,8 +4,8 @@ export async function GetAllCities() {
     return api.get(`database/cities`);
 }
 
-export async function GetDijkstraResult(zipcodestart, zipcodeend) {
-    return api.get(`/shortpath/start/${zipcodestart}/end/${zipcodeend}`);
+export async function GetDijkstraResult(payload) {
+    return api.post(`/shortpath/start`, payload);
 }
 
 export async function GetDistance(origin, destiny) {

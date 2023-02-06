@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, useMapEvents, Marker } from "react-leaflet";
+import { FaSearchLocation, FaPlus } from "react-icons/fa";
 import {
   GetAllCities,
   GetDijkstraResult,
@@ -23,7 +24,7 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const [productName, setProductName] = useState("");
   const [productValue, setProductValue] = useState(0);
-  const [productWeight, setProductWight] = useState(0);
+  const [productWeight, setProductWeight] = useState(0);
   const [maxWeight, setMaxWeight] = useState(0);
 
   useEffect(() => {
@@ -37,7 +38,7 @@ const Home = () => {
 
   const handleMaxWeight = (e) => {
     console.log(e);
-    setMaxWeight(e);
+    setMaxWeight(Number(e));
   };
 
   const handleProductName = (e) => {
@@ -47,12 +48,12 @@ const Home = () => {
 
   const handleProductWeight = (e) => {
     console.log(e);
-    setProductWight(e);
+    setProductWeight(Number(e));
   };
 
   const handleProductValue = (e) => {
     console.log(e);
-    setProductValue(e);
+    setProductValue(Number(e));
   };
 
   const handleProduct = () => {
@@ -61,14 +62,17 @@ const Home = () => {
       value: productValue,
       weight: productWeight,
     };
-
-    setProducts([...products, aux]);
+    !aux.name && alert("Insira o nome do produto");
+    !aux.value && alert("Insira o valor do produto");
+    !aux.weight && alert("Insira o peso do produto");
+    aux.name && aux.value && aux.weight && setProducts([...products, aux]);
   };
 
   const handleSearchRoute = async () => {
     !(selectedCities.start || selectedCities.end) &&
       alert("Selecione o ponto de partida e o ponto de destino");
 
+    products.length === 0 && alert("Registre um produto!");
     const payload = {
       start: selectedCities.start,
       end: selectedCities.end,
@@ -76,13 +80,14 @@ const Home = () => {
       maxWeight: maxWeight,
     };
 
-    console.log("PAYLOAD", payload);
-
-    // const dijkstraTemp = (
-    //   await GetDijkstraResult(selectedCities.start, selectedCities.end)
-    // ).data;
-    // handleDistance(dijkstraTemp);
-    // setDijkstra(dijkstraTemp);
+    if (products.length >= 1 && payload.maxWeight > 0) {
+      const dijkstraTemp = (
+        await GetDijkstraResult(payload)
+      ).data;
+      console.log("dijkstraTemp RETURN", dijkstraTemp)
+      handleDistance(dijkstraTemp);
+      setDijkstra(dijkstraTemp);
+    }
   };
 
   const handleDistance = async (dijkstraTemp) => {
@@ -189,11 +194,12 @@ const Home = () => {
                 <label htmlFor="peso-maximo">Nome do Produto</label>
                 <input
                   type="text"
-                  name=""
+                  name={productName}
                   id="peso-maximo"
                   className="form-control p-2 mb-2"
                   placeholder="Ex: Iphone"
                   onChange={(e) => handleProductName(e.target.value)}
+                  required
                 />
               </div>
               <div className="col-6">
@@ -201,11 +207,12 @@ const Home = () => {
                 <label htmlFor="peso-maximo">Peso do Produto</label>
                 <input
                   type="number"
-                  name=""
+                  name={productWeight}
                   id="peso-maximo"
                   className="form-control p-2 mb-2"
                   placeholder="Ex: 50"
                   onChange={(e) => handleProductWeight(e.target.value)}
+                  required
                 />
               </div>
               <div className="col-12">
@@ -213,17 +220,29 @@ const Home = () => {
                 <label htmlFor="peso-maximo">Valor do Produto</label>
                 <input
                   type="number"
-                  name=""
+                  name={productValue}
                   id="peso-maximo"
                   placeholder="Ex: 15"
                   className="form-control p-2 mb-2"
                   onChange={(e) => handleProductValue(e.target.value)}
+                  required
                 />
               </div>
-              <button onClick={() => handleProduct()}>Registrar Produto</button>
-              <button onClick={() => handleSearchRoute()} className="mt-2">
-                Buscar rota
-              </button>
+              <div className="col-7">
+                <button onClick={() => handleProduct()}>
+                  Adicionar Produto <FaPlus color="#fff" size={20} />
+                </button>
+              </div>
+              <div className="col-5">
+                <button onClick={() => handleSearchRoute()}>
+                  Buscar rota{" "}
+                  <FaSearchLocation
+                    color="#fff"
+                    size={20}
+                    style={{ marginLeft: 5 }}
+                  />{" "}
+                </button>
+              </div>
             </div>
             <div className="products-list mt-2">
               {products &&
@@ -233,6 +252,38 @@ const Home = () => {
                     {p.weight} - <span>Valor: </span> {p.value}
                   </p>
                 ))}
+            </div>
+            <div className="results">
+                
+            </div>
+            <div className="sidebar-results">
+              {temporaryArray.length > 1 && (
+                <div className="text-center header">
+                  <p>Rota</p>
+                </div>
+              )}
+              {temporaryArray.length > 1 &&
+                temporaryArray.map((c, e) => (
+                  <div key={e} className="routes">
+                    <p id="start">
+                      De: <span>{c.start}</span>{" "}
+                    </p>
+                    <p id="end">
+                      Para: <span>{c.end}</span>{" "}
+                    </p>
+                    <p id="distance">
+                      Distance: <span>{c.distance}km</span>
+                    </p>
+                  </div>
+                ))}
+              {temporaryArray.length > 1 && (
+                <div className="text-center footer">
+                  <p>
+                    Distancia Final:{" "}
+                    <span>{dijkstra && dijkstra.totalDistance}km</span>
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
