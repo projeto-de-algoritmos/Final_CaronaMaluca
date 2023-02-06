@@ -37,22 +37,18 @@ const Home = () => {
   };
 
   const handleMaxWeight = (e) => {
-    console.log(e);
     setMaxWeight(Number(e));
   };
 
   const handleProductName = (e) => {
-    console.log(e);
     setProductName(e);
   };
 
   const handleProductWeight = (e) => {
-    console.log(e);
     setProductWeight(Number(e));
   };
 
   const handleProductValue = (e) => {
-    console.log(e);
     setProductValue(Number(e));
   };
 
@@ -81,10 +77,8 @@ const Home = () => {
     };
 
     if (products.length >= 1 && payload.maxWeight > 0) {
-      const dijkstraTemp = (
-        await GetDijkstraResult(payload)
-      ).data;
-      console.log("dijkstraTemp RETURN", dijkstraTemp)
+      const dijkstraTemp = (await GetDijkstraResult(payload)).data;
+      console.log("dijkstraTemp RETURN", dijkstraTemp);
       handleDistance(dijkstraTemp);
       setDijkstra(dijkstraTemp);
     }
@@ -98,22 +92,25 @@ const Home = () => {
     };
     let res = 0;
     temporaryArray = [];
-    for (let index = 0; index <= dijkstraTemp.nodesInfo.length - 2; index++) {
-      console.log(dijkstraTemp.nodesInfo[index]);
+    for (
+      let index = 0;
+      index <= dijkstraTemp.result.nodesInfo.length - 2;
+      index++
+    ) {
       res = (
         await GetDistance(
-          dijkstraTemp.nodesInfo[index].zip,
-          dijkstraTemp.nodesInfo[index + 1].zip
+          dijkstraTemp.result.nodesInfo[index].zip,
+          dijkstraTemp.result.nodesInfo[index + 1].zip
         )
       ).data;
       defaultTemplate.start =
-        dijkstraTemp.nodesInfo[index].city +
+        dijkstraTemp.result.nodesInfo[index].city +
         " - " +
-        dijkstraTemp.nodesInfo[index].state;
+        dijkstraTemp.result.nodesInfo[index].state;
       defaultTemplate.end =
-        dijkstraTemp.nodesInfo[index + 1].city +
+        dijkstraTemp.result.nodesInfo[index + 1].city +
         " - " +
-        dijkstraTemp.nodesInfo[index + 1].state;
+        dijkstraTemp.result.nodesInfo[index + 1].state;
       defaultTemplate.distance = res;
       temporaryArray.push(defaultTemplate);
       defaultTemplate = {};
@@ -253,9 +250,15 @@ const Home = () => {
                   </p>
                 ))}
             </div>
-            <div className="results">
-                
-            </div>
+            {dijkstra && dijkstra.answer && (
+              <div className="results">
+                <p>
+                  {" "}
+                  <b>Valor total do transporte: </b> {dijkstra.answer}
+                </p>
+              </div>
+            )}
+
             <div className="sidebar-results">
               {temporaryArray.length > 1 && (
                 <div className="text-center header">
@@ -280,7 +283,7 @@ const Home = () => {
                 <div className="text-center footer">
                   <p>
                     Distancia Final:{" "}
-                    <span>{dijkstra && dijkstra.totalDistance}km</span>
+                    <span>{dijkstra && dijkstra.result.totalDistance}km</span>
                   </p>
                 </div>
               )}
@@ -297,8 +300,8 @@ const Home = () => {
           >
             <TileLayer url="https://a.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             {dijkstra &&
-              dijkstra.nodesInfo &&
-              dijkstra.nodesInfo.map((p, index) => (
+              dijkstra.result.nodesInfo &&
+              dijkstra.result.nodesInfo.map((p, index) => (
                 <Marker
                   key={index}
                   interactive={false}

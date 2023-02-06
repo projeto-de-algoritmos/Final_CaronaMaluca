@@ -6,8 +6,10 @@
 
 /* ********** SIDEBAR STYLES ********** */
 .home-container {
-    width: 100vw;
-    height: 100vh;
+    min-width: 100vw;
+    width: auto;
+    height: auto;
+    min-height: 100vh;
     display: flex;
 }
 
@@ -59,6 +61,14 @@ button:hover {
     margin-top: 3%;
     height: 400px;
     overflow-y: auto;
+}
+
+.products-list span {
+    font-weight: bold;
+}
+
+.results {
+    
 }
 
 .sidebar-results .header{
@@ -121,10 +131,6 @@ button:hover {
     font-weight: 600;
     font-size: 1.2rem;
     color: var(--primary-color);
-}
-
-.products-list span {
-    font-weight: bold;
 }
 
 /* ********** MAIN STYLES ********** */
