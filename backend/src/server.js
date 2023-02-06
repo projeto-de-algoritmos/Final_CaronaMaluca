@@ -1,8 +1,9 @@
 const express = require('express');
 const cors = require('cors')
 const zipcodes = require('zipcodes');
-const { findShortestPath } = require('./graph');
+const { findShortestPath, get_knapsack_value} = require('./graph');
 const { cities } = require('./database/states');
+// const {get_knapsack_value} = require('')
 
 const app = express();
 app.use(cors());
@@ -49,12 +50,20 @@ app.get('/local/name/:name/state/:state', (request, response, next) => {
 });
 
 /* ********** Get Short path by Dijkstra ********** */
-app.get('/shortpath/start/:zipcodestart/end/:zipcodeend', (request, response, next) => {
+app.get('/shortpath/start/:payload', (request, response, next) => {
     console.log('Get Shortest Path');
-    const { zipcodestart, zipcodeend } = request.params;
+    const { payload } = request.params;
+    zipcodestart = payload.start
+    zipcodeend = payload.end
+    products = payload.products
+    maxweight = payload.maxweight
     try {
         var result = findShortestPath(zipcodestart, zipcodeend);
-        response.json(result);
+        var value = get_knapsack_value(products, maxweight)
+        var obj = Object.assign({}, result, value)
+
+        response.json(obj);
+
     } catch (error) {
         console.log('Get Shortest Path(ERROR): ');
         next(error);
