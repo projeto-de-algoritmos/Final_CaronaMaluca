@@ -1,12 +1,15 @@
 const express = require('express');
 const cors = require('cors')
+const bodyParser = require("body-parser");
 const zipcodes = require('zipcodes');
-const { findShortestPath, get_knapsack_value} = require('./graph');
+const { findShortestPath, get_knapsack_value } = require('./graph');
 const { cities } = require('./database/states');
 // const {get_knapsack_value} = require('')
 
 const app = express();
 app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 /* ********** Local by ZipCode ********** */
 app.get('/local/zipcode/:zip_code', (request, response, next) => {
@@ -50,16 +53,16 @@ app.get('/local/name/:name/state/:state', (request, response, next) => {
 });
 
 /* ********** Get Short path by Dijkstra ********** */
-app.get('/shortpath/start/:payload', (request, response, next) => {
+app.post('/shortpath/start', (request, response, next) => {
     console.log('Get Shortest Path');
-    const { payload } = request.params;
-    zipcodestart = payload.start
-    zipcodeend = payload.end
-    products = payload.products
-    maxweight = payload.maxweight
+    const payload = request.body;
+    const zipcodestart = payload.start
+    const zipcodeend = payload.end
+    const products = payload.products
+    const maxWeight = payload.maxWeight
     try {
         var result = findShortestPath(zipcodestart, zipcodeend);
-        var value = get_knapsack_value(products, maxweight)
+        var value = get_knapsack_value(products, maxWeight)
         var obj = Object.assign({}, result, value)
 
         response.json(obj);

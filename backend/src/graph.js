@@ -194,5 +194,5 @@ function get_knapsack_value(products ,capacity){
 
 
 module.exports = {
-  findShortestPath
+  findShortestPath, get_knapsack_value
 }
