@@ -254,7 +254,7 @@ const Home = () => {
               <div className="results">
                 <p>
                   {" "}
-                  <b>Valor total do transporte: </b> {dijkstra.answer}
+                  <b>Valor total do transporte: R$ </b> {dijkstra.answer}
                 </p>
               </div>
             )}
