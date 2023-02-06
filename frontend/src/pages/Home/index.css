@@ -1,0 +1,139 @@
+:root {
+    --primary-color: #B22234;
+    --secundary-color: #3C3B6E;
+    --terciary-color: #FFFFFF;
+}
+
+/* ********** SIDEBAR STYLES ********** */
+.home-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+.home-sidebar {
+    width: 35%;
+    height: 100%;
+    background-color: var(--terciary-color);
+    padding: 20px 30px;
+}
+
+.sidebar-title h1 {
+    font-size: 1.6rem;
+    color: var(--secundary-color);
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.sidebar-title img {
+    width: 50px;
+    margin-left: 10px;
+}
+
+.sidebar-header {
+    height: 20%;
+}
+
+button {
+    padding: 8px 30px;
+    background-color: var(--primary-color);
+    color: var(--terciary-color);
+    font-weight: 600;
+    border: none !important;
+    border-radius: 5px !important;
+}
+
+button:hover {
+    cursor: pointer;
+    transition: 0.5s;
+    opacity: 0.5;
+
+}
+
+.sidebar-results {
+    height: 60%;
+    overflow-y: auto;
+}
+
+.sidebar-results .header{
+    background-color: var(--terciary-color);
+    margin: 0px !important;
+    border-top-left-radius: 5px !important;
+    border-top-right-radius: 5px !important;
+}
+
+.sidebar-results .header p{
+    border-top-left-radius: 5px !important;
+    border-top-right-radius: 5px !important;
+    background-color: var(--terciary-color);
+    padding: 5px 10px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0px !important;
+}
+
+.sidebar-results .routes{
+    background-color: var(--terciary-color);
+    padding: 5px 10px;
+}
+
+.sidebar-results .routes p{
+    background-color: var(--terciary-color);
+    margin: 0px !important;
+    padding: 0px !important;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.sidebar-results .routes #start span{
+    font-weight: 600;
+    color: var(--secundary-color);
+}
+
+.sidebar-results .routes #end span{
+    font-weight: 600;
+    color: var(--secundary-color);
+}
+
+.sidebar-results .routes #distance span{
+    font-weight: 600;
+    color: var(--secundary-color);
+}
+
+.sidebar-results .footer {
+    background-color: var(--terciary-color);
+    padding: 15px 10px 5px 10px;
+    font-weight: 600;
+    color: var(--secundary-color);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+
+}
+
+.sidebar-results .footer span {
+    background-color: var(--terciary-color);
+    padding: 15px 10px 5px 10px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+.sidebar-footer {
+    height: 10%;
+}
+
+.sidebar-footer p {
+    color: var(--primary-color);
+    margin: 0px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* ********** MAIN STYLES ********** */
+
+.home-main {
+    width: 100%;
+}
