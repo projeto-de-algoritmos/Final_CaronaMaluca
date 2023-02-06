@@ -62,9 +62,14 @@ app.post('/shortpath/start', (request, response, next) => {
     const maxWeight = payload.maxWeight
     try {
         var result = findShortestPath(zipcodestart, zipcodeend);
-        var value = get_knapsack_value(products, maxWeight)
-        var obj = Object.assign({}, result, value)
-
+        var { answer, chosen_products, total_weight } = get_knapsack_value(products, maxWeight)
+        console.log("get_knapsack_value", answer, chosen_products, total_weight)
+        var obj = {
+            answer: answer,
+            chosen_products: chosen_products,
+            total_weight: total_weight,
+            result
+        }
         response.json(obj);
 
     } catch (error) {

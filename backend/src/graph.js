@@ -1,26 +1,26 @@
-const {cities} = require('./database/states');
+const { cities } = require('./database/states');
 const zipcodes = require('zipcodes');
 
 
 // variaveis globais
 var dp;
-let v =[]
+let v = []
 let p = []
-let solution =  []
+let solution = []
 
-function getNodeDistance(node1,node2) {
+function getNodeDistance(node1, node2) {
   var dist = zipcodes.distance(node1, node2);
   return zipcodes.toKilometers(dist);
 }
 
-function init() { 
+function init() {
 
-  for(i = 0; i < cities.length; i++) {
-    
+  for (i = 0; i < cities.length; i++) {
+
     let dists = {}
-    for(o = 0; o < cities[i].edges.length; o++){
-      
-      dists[cities[i].edges[o]] = getNodeDistance(cities[i].zipcode,cities[i].edges[o])
+    for (o = 0; o < cities[i].edges.length; o++) {
+
+      dists[cities[i].edges[o]] = getNodeDistance(cities[i].zipcode, cities[i].edges[o])
     }
     cities[i]['dist'] = dists
   }
@@ -28,22 +28,22 @@ function init() {
 
 let shortestDistanceNode = (distances, visited) => {
   // create a default value for shortest
-	let shortest = null;
-	
-  	// for each node in the distances object
-	for (let node in distances) {
-    	// if no node has been assigned to shortest yet
-  		// or if the current node's distance is smaller than the current shortest
-		let currentIsShortest =
-			shortest === null || distances[node] < distances[shortest];
-        	
-	  	// and if the current node is in the unvisited set
-		if (currentIsShortest && !visited.includes(node)) {
-            // update shortest to be the current node
-			shortest = node;
-		}
-	}
-	return shortest;
+  let shortest = null;
+
+  // for each node in the distances object
+  for (let node in distances) {
+    // if no node has been assigned to shortest yet
+    // or if the current node's distance is smaller than the current shortest
+    let currentIsShortest =
+      shortest === null || distances[node] < distances[shortest];
+
+    // and if the current node is in the unvisited set
+    if (currentIsShortest && !visited.includes(node)) {
+      // update shortest to be the current node
+      shortest = node;
+    }
+  }
+  return shortest;
 };
 
 function findShortestPath(startNode, endNode) {
@@ -57,7 +57,7 @@ function findShortestPath(startNode, endNode) {
 
   let parents = {}
   parents[endNode] = null;
-  for (i = 0; i < cities[startPosition].edges.length; i++){
+  for (i = 0; i < cities[startPosition].edges.length; i++) {
     child = cities[startPosition].edges[i]
     parents[child] = cities[startPosition].zipcode;
   }
@@ -65,24 +65,24 @@ function findShortestPath(startNode, endNode) {
   visited = [];
   let node = shortestDistanceNode(distances, visited);
 
-  while(node){
+  while (node) {
     let distance = distances[node];
     nodePos = cities.findIndex(p => p.zipcode == node)
     let childrenZipcodes = cities[nodePos].edges
     let childrenDist = [];
-    for(let i = 0; i < childrenZipcodes.length; i++){
+    for (let i = 0; i < childrenZipcodes.length; i++) {
       childrenDist[i] = cities[nodePos].dist[childrenZipcodes[i]]
     }
-    
-    for (childPos in childrenZipcodes){
+
+    for (childPos in childrenZipcodes) {
       zip = childrenZipcodes[childPos];
 
-      if(zip === startNode){
+      if (zip === startNode) {
         continue;
-      }else{
+      } else {
         let newdistance = distance + childrenDist[childPos];
 
-        if(!distances[zip] || newdistance < distances[childrenZipcodes[childPos]]) {
+        if (!distances[zip] || newdistance < distances[childrenZipcodes[childPos]]) {
           distances[childrenZipcodes[childPos]] = newdistance;
 
           parents[zip] = node;
@@ -91,7 +91,7 @@ function findShortestPath(startNode, endNode) {
     }
 
     visited.push(node);
-    node = shortestDistanceNode(distances,visited);
+    node = shortestDistanceNode(distances, visited);
 
   }
 
@@ -100,21 +100,21 @@ function findShortestPath(startNode, endNode) {
   let shortestPathNodes = [];
   nodeInfo = zipcodes.lookup(endNode);
 
-  aux = {'distFromParent': null}
-  aux.distFromParent = distances[endNode] - getNodeDistance(parents[endNode],startNode);
+  aux = { 'distFromParent': null }
+  aux.distFromParent = distances[endNode] - getNodeDistance(parents[endNode], startNode);
 
-  nodeInfo = Object.assign(nodeInfo,aux);
-  shortestPathNodes.push(nodeInfo); 
+  nodeInfo = Object.assign(nodeInfo, aux);
+  shortestPathNodes.push(nodeInfo);
 
-  while(parent) {
+  while (parent) {
     shortestPath.push(parent);
     nodeInfo = zipcodes.lookup(parent);
     shortestPathNodes.push(nodeInfo);
 
-    aux = {'distFromParent': null}
-    aux.distFromParent = distances[parent] - getNodeDistance(parents[parent],startNode);
+    aux = { 'distFromParent': null }
+    aux.distFromParent = distances[parent] - getNodeDistance(parents[parent], startNode);
 
-    nodeInfo = Object.assign(nodeInfo,aux);
+    nodeInfo = Object.assign(nodeInfo, aux);
 
     parent = parents[parent];
   }
@@ -132,23 +132,24 @@ function findShortestPath(startNode, endNode) {
 }
 
 
-function init_knapsack(quantity_itens,capacity){
-  dp = Array(quantity_itens+1).fill(0).map(()=>Array(capacity+1).fill(0))
+function init_knapsack(quantity_itens, capacity) {
+  dp = Array(quantity_itens + 1).fill(0).map(() => Array(capacity + 1).fill(0))
   // return dp
 }
 
 var ans = 0;
-function get_knapsack_value(products ,capacity){
+function get_knapsack_value(products, capacity) {
+  console.log("PRODUTCSSDADDASDADA", products, capacity)
   let quantity_itens = products.length
   // console.log('qtde',quantity_itens)
 
   v[0] = 0
   p[0] = 0
 
-  init_knapsack(quantity_itens,capacity);
-  for(i = 0; i < quantity_itens; i++){
-    v[i+1] = products[i].value
-    p[i+1] = products[i].weight
+  init_knapsack(quantity_itens, capacity);
+  for (i = 0; i < quantity_itens; i++) {
+    v[i + 1] = products[i].value
+    p[i + 1] = products[i].weight
   }
   // console.log('v',v)
   // console.log('p',p)
@@ -156,45 +157,50 @@ function get_knapsack_value(products ,capacity){
   // console.log('capacity',capacity)
 
 
-  for(i = 1; i <= quantity_itens; i++){
-    for(P = 0; P <= capacity; P++){
-      dp[i][P] = dp[i-1][P];
-      
-      if (P >= p[i]){
-        dp[i][P] = Math.max(dp[i][P], dp[i-1][P - p[i]] + v[i])
+  for (i = 1; i <= quantity_itens; i++) {
+    for (P = 0; P <= capacity; P++) {
+      dp[i][P] = dp[i - 1][P];
+
+      if (P >= p[i]) {
+        dp[i][P] = Math.max(dp[i][P], dp[i - 1][P - p[i]] + v[i])
       }
       answer = Math.max(ans, dp[i][P])
     }
   }
 
-  find_solution(dp,quantity_itens,capacity)
-
+  find_solution(dp, quantity_itens, capacity)
+  console.log("SOLUTION", solution,quantity_itens, capacity)
   chosen_products = []
   total_weight = 0
   // console.log(solution)
-  for(i = 0; i < solution.length; i++){
-    chosen_products.push(products[solution[i]-1])
-    total_weight = total_weight+ products[solution[i]-1].weight
+  for (i = 0; i < solution.length; i++) {
+    chosen_products.push(products[solution[i] - 1])
+    total_weight = total_weight + products[solution[i] - 1]?.weight
   }
-
+  console.log("chosen products", chosen_products)
   // console.log(dp)
   // console.log(chosen_products)
-  // console.log(answer)
-  return ({answer, chosen_products, total_weight})
-
+  // console.log(answer)s
+  var obj = {
+    answer: answer,
+    chosen_products: chosen_products,
+    total_weight: total_weight,
+  }
+  return obj;
 }
 
-function find_solution(matrix, lastrow, target){
-  if(lastrow == 0){
+function find_solution(matrix, lastrow, target) {
+
+  if (lastrow == 0 || target <=0) {
     return solution
   }
 
-  if(matrix[lastrow-1][target] < matrix[lastrow-1][target- p[lastrow]] + v[lastrow]){
+  if (matrix[lastrow - 1][target] < matrix[lastrow - 1][target - p[lastrow]] + v[lastrow]) {
     solution.push(lastrow);
+    console.log("PUSH FIND SOLUTION", solution)
     target = target - p[lastrow];
-    lastrow = lastrow -1;
+    lastrow = lastrow - 1;
     find_solution(matrix, lastrow, target)
-
   }
 }
 
@@ -205,6 +211,7 @@ function find_solution(matrix, lastrow, target){
 
 // products = [{'name': 'iphone10','value':14,'weight':10},{'name': 'iphone11','value':20,'weight':10},
 // {'name': 'iphone12','value':30,'weight':10}]
+// console.log(products)
 // value = get_knapsack_value(products,20)
 // console.log(value)
 
