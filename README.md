@@ -65,7 +65,9 @@ Caso não abra automáticamente, para acessar a aplicação abra seu navegador n
 - O backend e frontend fazem uso respectivamente das portas: http://localhost:8080 e http://localhost:3000, dessa forma certifique-se de que estejam livres para rodar a aplicação.
 
 ## Vídeo de Apresentação
-Quaisquer outras informações sobre seu projeto podem ser descritas abaixo.
+- link do youtube: https://youtu.be/cUHWelksCTE
+- link do video no sharepoint: https://unbbr.sharepoint.com/:v:/s/PA-Gravaes/Ec6gaSRhhrBGlBtR78IT4JAB6YQ6Je6GQCyeUdVzYFNKXA?e=cJatkE
+- - Caso nenhuma das opções esteja disponível, o vídeo encontrasse dentro do repositório no caminho "assets/Trabalho Final PA - Entrega Rápida.mp4".
 
 
 
